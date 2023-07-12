@@ -20,14 +20,14 @@ const Url = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (longUrl.length === 0) return;
     if (!loading) {
       setLoading(true);
       const res = await getShortUrl(longUrl);
-      window.setTimeout(() => {
-        setShortUrl(process.env.REACT_APP_S2L + '/' + res);
-        console.log(process.env.REACT_APP_S2L);
-        setLoading(false);
-      }, 2000);
+
+      setShortUrl(process.env.REACT_APP_S2L + '/' + res);
+      // console.log(process.env.REACT_APP_S2L);
+      setLoading(false);
     }
   };
   const handleChange = (e) => {

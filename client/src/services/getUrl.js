@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const url = process.env.REACT_APP_L2S;
 const getShortUrl = async (inp) => {
-  console.log(url);
+  // console.log(url);
   try {
     let data = JSON.stringify({
       url: inp,
@@ -18,7 +18,7 @@ const getShortUrl = async (inp) => {
       data: data,
     };
     const result = await axios.request(config);
-    console.log(result.data);
+    // console.log(result.data);
     return result.data.url;
   } catch (error) {
     console.log(error);
