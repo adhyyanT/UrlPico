@@ -6,19 +6,29 @@ import { Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import getShortUrl from '../services/getUrl';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Url = () => {
   const [longUrl, setLongUrl] = useState('');
   const [shortUrl, setShortUrl] = useState('');
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const handleClick = () => {
     setOpen(true);
     navigator.clipboard.writeText(shortUrl.toString());
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await getShortUrl(longUrl);
-    setShortUrl(process.env.REACT_APP_S2L + '/' + res);
+    if (!loading) {
+      setLoading(true);
+      const res = await getShortUrl(longUrl);
+      window.setTimeout(() => {
+        setShortUrl(process.env.REACT_APP_S2L + '/' + res);
+        console.log(process.env.REACT_APP_S2L);
+        setLoading(false);
+      }, 2000);
+    }
   };
   const handleChange = (e) => {
     setLongUrl(e.target.value);
@@ -90,13 +100,20 @@ const Url = () => {
             //   columns: '1',
           }}
         >
-          <Button
-            color='success'
-            variant='contained'
-            onClick={(e) => handleSubmit(e)}
-          >
-            Go
-          </Button>
+          {loading ? (
+            <>
+              {' '}
+              <CircularProgress color='success' />
+            </>
+          ) : (
+            <Button
+              color='success'
+              variant='contained'
+              onClick={(e) => handleSubmit(e)}
+            >
+              Go
+            </Button>
+          )}
         </Grid>
         {shortUrl.length === 0 ? (
           <></>
