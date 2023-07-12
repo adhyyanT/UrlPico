@@ -1,6 +1,6 @@
 const express = require('express');
 const connectDB = require('./config/database');
-const Pair = require('./Models/Pair');
+const Pair = require('./models/Pair');
 require('dotenv').config;
 const cors = require('cors');
 const app = express();
