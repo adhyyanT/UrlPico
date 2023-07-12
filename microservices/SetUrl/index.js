@@ -4,7 +4,7 @@ const Pair = require('./Models/Pair');
 require('dotenv').config;
 const cors = require('cors');
 const app = express();
-const counter = require('./Models/Counter');
+const counter = require('./models/Counter');
 app.use(express.json());
 app.use(cors());
 let redis;
