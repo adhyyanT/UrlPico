@@ -2,18 +2,20 @@ const express = require('express');
 const connectDB = require('./config/database');
 const Pair = require('./Models/Pair');
 require('dotenv').config;
+const cors = require('cors');
 const app = express();
 const counter = require('./Models/Counter');
 app.use(express.json());
-
+app.use(cors());
 let redis;
 // set Long url to short url and generate short url
-app.get('/l2s', async (req, res) => {
+app.post('/l2s', async (req, res) => {
   try {
     const longUrl = req.body.url;
+    console.log(req.body);
     const already = await Pair.findOne({ longUrl });
     if (already) {
-      res.json(already.shortUrl);
+      res.json({ url: already.shortUrl });
       return;
     }
     const curr = await counter.findOne({ id: 100 });
@@ -37,7 +39,7 @@ app.get('/l2s', async (req, res) => {
       shortUrl,
     });
     await redis.set(shortUrl, longUrl);
-    res.json(newData.shortUrl);
+    res.json({ url: newData.shortUrl });
   } catch (error) {
     console.error(error);
   }

@@ -1,17 +1,23 @@
 const express = require('express');
 const connectDB = require('./config/database');
 const Pair = require('./Models/Pair');
+const cors = require('cors');
 require('dotenv').config;
 const app = express();
 app.use(express.json());
+app.use(cors());
 let redis;
 const cache = async (req, res, next) => {
   const shortUrl = req.originalUrl.split('/')[2];
   const result = await redis.get(shortUrl);
   if (result !== null) {
+    if (result.includes('http')) {
+      res.redirect(result);
+    } else {
+      res.redirect('https://' + result);
+    }
     // console.log('HIT');
     // console.log('https://' + result);
-    res.redirect('https://' + result);
   } else next();
 };
 
@@ -21,7 +27,11 @@ app.get('/s2l/[a-z0-9A-Z]', cache, async (req, res) => {
     const shortUrl = req.originalUrl.split('/')[2];
     const longUrl = await Pair.findOne({ shortUrl });
     await redis.set(shortUrl, longUrl);
-    res.redirect('https://' + longUrl.longUrl);
+    if (longUrl.includes('http')) {
+      res.redirect(longUrl.longUrl);
+    } else {
+      res.redirect('https://' + longUrl.longUrl);
+    }
   } catch (error) {
     res.send('No Website');
   }
