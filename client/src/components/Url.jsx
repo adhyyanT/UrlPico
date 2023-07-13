@@ -60,7 +60,9 @@ const Url = () => {
             paddingBottom: '10%',
           }}
         >
-          <h1>Pico-URL</h1>
+          <Typography variant='h3' color='common.white'>
+            Pico-URL
+          </Typography>
         </Grid>
         <Grid item>
           <Box
