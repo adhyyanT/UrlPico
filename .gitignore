@@ -2,5 +2,6 @@ node_modules
 microservices/GetUrl/node_modules
 microservices/GetUrl/.env
 microservices/SetUrl/.env
+microservices/Persistent/.env
 microservices/SetUrl/node_modules
 client/.env
